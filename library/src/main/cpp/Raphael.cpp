@@ -26,6 +26,7 @@
 void Raphael::start(JNIEnv *env, jobject obj, jint configs, jstring space, jstring regex) {
     mSpace = (char *) env->GetStringUTFChars(space, 0);
     mCache = new MemoryCache(mSpace);
+	mCache->reset();
     update_configs(mCache, 0);
 
     if (regex != nullptr) {
@@ -34,7 +35,6 @@ void Raphael::start(JNIEnv *env, jobject obj, jint configs, jstring space, jstri
         registerInlineProxy(env);
     }
 
-    mCache->reset();
     pthread_key_create(&guard, nullptr);
     LOGGER("start >>> %#x, %s", (uint) configs, mSpace);
     update_configs(mCache, configs);
